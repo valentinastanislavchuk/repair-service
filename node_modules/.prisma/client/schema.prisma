@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  name     String
+  role     Role
+  password String
+  requests Request[] @relation("MasterRequests")
+}
+
+model Request {
+  id           Int      @id @default(autoincrement())
+  clientName   String
+  phone        String
+  address      String
+  problemText  String
+  status       Status   @default(new)
+  assignedToId Int?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  assignedTo   User?    @relation("MasterRequests", fields: [assignedToId], references: [id])
+}
+
+enum Status {
+  new
+  assigned
+  in_progress
+  done
+  canceled
+}
+
+enum Role {
+  dispatcher
+  master
+}

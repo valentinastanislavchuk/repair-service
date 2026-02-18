@@ -1,0 +1,20 @@
+<h2>Dispatcher Panel</h2>
+
+<% requests.forEach(r => { %>
+<div>
+  <b><%= r.clientName %></b> - <%= r.status %>
+
+  <form method="POST" action="/requests/<%= r.id %>/assign">
+    <select name="masterId">
+      <% masters.forEach(m => { %>
+        <option value="<%= m.id %>"><%= m.name %></option>
+      <% }) %>
+    </select>
+    <button type="submit">Assign</button>
+  </form>
+
+  <form method="POST" action="/requests/<%= r.id %>/cancel">
+    <button type="submit">Cancel</button>
+  </form>
+</div>
+<% }) %>
